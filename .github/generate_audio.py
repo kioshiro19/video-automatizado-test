@@ -1,14 +1,19 @@
-from TTS.api import TTS
+from gtts import gTTS
 import os
 
 # Cargar el guion
-with open("script.txt", "r", encoding="utf-8") as f:
-    script = f.read()
+try:
+    with open("script.txt", "r", encoding="utf-8") as f:
+        script = f.read()
+except FileNotFoundError:
+    print("Error: script.txt no encontrado")
+    exit(1)
 
-# Inicializar Coqui TTS con un modelo en español
-tts = TTS(model_name="tts_models/es/css10/vits", progress_bar=True)
-
-# Generar audio
-tts.tts_to_file(text=script, file_path="narration.wav")
-
-print("Audio generado y guardado en narration.wav")
+# Generar audio con gTTS
+try:
+    tts = gTTS(text=script, lang="es", slow=False)
+    tts.save("narration.mp3")
+    print("Audio generado y guardado en narration.mp3")
+except Exception as e:
+    print(f"Error generando audio: {e}")
+    exit(1)
