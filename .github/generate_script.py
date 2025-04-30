@@ -15,8 +15,12 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 prompt = """
 Escribe un guion breve (máximo 100 palabras) para un video de 1 minuto sobre un dato curioso de la naturaleza. Usa un tono informativo y amigable, adecuado para un video narrado en YouTube. Incluye solo el texto del guion, sin títulos ni instrucciones adicionales.
 """
-response = model.generate_content(prompt)
-script = response.text.strip()
+try:
+    response = model.generate_content(prompt)
+    script = response.text.strip()
+except Exception as e:
+    print(f"Error generando guion: {e}")
+    exit(1)
 
 # Guardar el guion
 with open("script.txt", "w", encoding="utf-8") as f:
